@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Grok Bot",
+      "hasCanvas": false,
+      "bodyTextLen": 1301,
+      "bodyTextHash": "33f02a24bf4cd9cf1963bcab8185be7b6025fe2fd0baca140ea7a86ba081e8ec",
+      "bodyTextPrefix": "Chief Yesterday booked the venue and sent the calendar hold. Fri",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Grok Bot",
+      "hasCanvas": false,
+      "bodyTextLen": 358,
+      "bodyTextHash": "470d0dbb3e7ac2859cc8fcf4fcbf5102799c88c851f18e4eabc5f3b4b879f0bf",
+      "bodyTextPrefix": "Sales Outbound Pull the Q4 pipeline combo, and Salesforce. Draft",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

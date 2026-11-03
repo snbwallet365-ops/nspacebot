@@ -1,0 +1,83 @@
+{
+  "source": "other",
+  "source_detail": "Grok workspace ZIP (grok-workspace.zip), app 'Grok Bot' \u2014 named AI teammates on a shared computer",
+  "capabilities": [
+    {
+      "capability": "code",
+      "source": "zip",
+      "outcome": "copy",
+      "status": "migrate",
+      "next_action": "copy app source into project root excluding build output/caches"
+    },
+    {
+      "capability": "schema",
+      "source": "migrations/auth/0001_auth.sql (better-auth tables: user, session, account, verification)",
+      "outcome": "applied at dev-server start via pglite bootstrap plugin",
+      "status": "migrate",
+      "next_action": "verify dev server applies migrations"
+    },
+    {
+      "capability": "records",
+      "source": "pglite in-process database (no external DB, database=false)",
+      "outcome": "none",
+      "status": "accepted",
+      "next_action": "none \u2014 app uses embedded pglite, no record export exists or is needed"
+    },
+    {
+      "capability": "auth",
+      "source": "better-auth + pglite; VITE_AUTH_ENABLED=false in .grok/app-env.json for preview",
+      "outcome": "preserved as-is",
+      "status": "migrate",
+      "next_action": "verify app loads with auth disabled"
+    },
+    {
+      "capability": "storage",
+      "source": "none",
+      "outcome": "none",
+      "status": "accepted",
+      "next_action": "none"
+    },
+    {
+      "capability": "public endpoints",
+      "source": "none detected",
+      "outcome": "none",
+      "status": "accepted",
+      "next_action": "none"
+    },
+    {
+      "capability": "webhooks/schedules",
+      "source": "none detected",
+      "outcome": "none",
+      "status": "accepted",
+      "next_action": "none"
+    },
+    {
+      "capability": "external providers",
+      "source": "OAuth providers gated behind VITE_AUTH_ENABLED; STUN urls for p2p multiplayer default",
+      "outcome": "chat replies now generated through Lovable AI Gateway (openai/gpt-6-astra) replacing Grok's unreachable xAI key path; verified end-to-end in preview",
+      "status": "verified",
+      "next_action": "none"
+    },
+    {
+      "capability": "secrets",
+      "source": "no secrets required (no XAI_API_KEY call sites found in src)",
+      "outcome": "none",
+      "status": "verified",
+      "next_action": "none"
+    },
+    {
+      "capability": "cutover",
+      "source": "vercel.json preset",
+      "outcome": "not applicable for Lovable preview",
+      "status": "accepted",
+      "next_action": "none"
+    },
+    {
+      "capability": "verification",
+      "source": "dev server 0.0.0.0:8080",
+      "outcome": "build OK, home route renders with demo chats, teammate switch + message send work; 189/197 unit tests pass",
+      "status": "verified",
+      "next_action": "8 failures are Grok-platform OG-metadata tests dependent on Grok's hosting env \u2014 non-blocking"
+    }
+  ]
+}
