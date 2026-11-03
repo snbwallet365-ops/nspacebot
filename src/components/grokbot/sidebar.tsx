@@ -1,4 +1,4 @@
-import { Plus, Search } from "lucide-react";
+import { Eye, EyeOff, Plus, Search, SlidersHorizontal } from "lucide-react";
 import { previewText, USER_NAME, type Bot } from "@/lib/agents/model";
 import { BotMark } from "@/components/grokbot/avatars";
 
@@ -12,6 +12,10 @@ export function Sidebar({
   onProfile,
   mobile,
   onClose,
+  onSettings,
+  role,
+  hidden,
+  onToggleHidden,
 }: {
   bots: Bot[];
   activeId: string;
@@ -22,9 +26,15 @@ export function Sidebar({
   onProfile: () => void;
   mobile?: boolean;
   onClose?: () => void;
+  onSettings?: () => void;
+  role?: "admin" | "staff" | null;
+  hidden?: string[];
+  onToggleHidden?: (id: string) => void;
 }) {
   const q = query.trim().toLowerCase();
+  const hiddenIds = hidden ?? [];
   const shown = bots.filter((b) => {
+    if (role !== "admin" && hiddenIds.includes(b.id)) return false;
     if (!q) return true;
     return (
       b.name.toLowerCase().includes(q) ||
@@ -94,7 +104,30 @@ export function Sidebar({
                   <span className="min-w-0 flex-1">
                     <span className="flex items-baseline justify-between gap-2">
                       <span className="truncate text-sm font-semibold text-fg">{bot.name}</span>
-                      <span className="shrink-0 text-xs text-muted tabular-nums">{bot.timeLabel}</span>
+                      {role === "admin" ? (
+                        <span
+                          role="button"
+                          tabIndex={0}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            onToggleHidden?.(bot.id);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              onToggleHidden?.(bot.id);
+                            }
+                          }}
+                          aria-label={hiddenIds.includes(bot.id) ? "Show bot" : "Hide bot"}
+                          className="grid size-5 shrink-0 place-items-center rounded-full bg-inset text-fg/70"
+                        >
+                          {hiddenIds.includes(bot.id) ? <EyeOff size={11} /> : <Eye size={11} />}
+                        </span>
+                      ) : (
+                        <span className="shrink-0 text-xs text-muted tabular-nums">{bot.timeLabel}</span>
+                      )}
                     </span>
                     <span className="mt-0.5 block truncate text-xs text-muted">{previewText(bot)}</span>
                   </span>
@@ -104,6 +137,16 @@ export function Sidebar({
           })}
         </ul>
       </div>
+
+      {onSettings && (
+        <button
+          type="button"
+          onClick={onSettings}
+          className="flex items-center gap-2.5 border-t border-line px-4 py-2.5 text-left text-sm font-medium text-fg hover:bg-surface"
+        >
+          <SlidersHorizontal size={15} /> Keys & settings
+        </button>
+      )}
 
       <button
         type="button"

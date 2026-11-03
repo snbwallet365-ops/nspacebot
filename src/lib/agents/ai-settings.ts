@@ -18,6 +18,8 @@ export type AiSettings = {
   tone: ReplyTone;
   visaKnowledge: boolean;
   extra: string;
+  selfHosted: boolean;
+  keys: { gemini: string; openai: string; deepseek: string };
 };
 
 export const DEFAULT_AI_SETTINGS: AiSettings = {
@@ -26,6 +28,8 @@ export const DEFAULT_AI_SETTINGS: AiSettings = {
   tone: "coworker",
   visaKnowledge: false,
   extra: "",
+  selfHosted: true,
+  keys: { gemini: "", openai: "", deepseek: "" },
 };
 
 const KEY = "nspace-ai-settings-v1";
@@ -38,6 +42,12 @@ export function sanitizeSettings(input: unknown): AiSettings {
     tone: d.tone === "friendly" || d.tone === "formal" ? d.tone : "coworker",
     visaKnowledge: d.visaKnowledge === true,
     extra: String(d.extra ?? "").slice(0, 1000),
+    selfHosted: d.selfHosted !== false,
+    keys: {
+      gemini: String((d.keys as Record<string, unknown> | undefined)?.gemini ?? "").slice(0, 200),
+      openai: String((d.keys as Record<string, unknown> | undefined)?.openai ?? "").slice(0, 200),
+      deepseek: String((d.keys as Record<string, unknown> | undefined)?.deepseek ?? "").slice(0, 200),
+    },
   };
 }
 

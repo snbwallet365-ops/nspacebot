@@ -433,7 +433,9 @@ export const useBotStore = create<BotState & Actions>((set, get) => ({
     });
 
     let reply = plan.fallback;
+    const settingsNow = currentAiSettings();
     try {
+      if (settingsNow.selfHosted) throw new Error("self-hosted");
       const res = await askBot({
         data: {
           botName: nextBot.name,
@@ -441,7 +443,7 @@ export const useBotStore = create<BotState & Actions>((set, get) => ({
           environment,
           hint: plan.hint,
           messages: history,
-          settings: currentAiSettings(),
+          settings: settingsNow,
         },
       });
       if (res.ok) reply = res.text;

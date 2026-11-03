@@ -154,6 +154,30 @@ export function AiSettingsDialog({ onClose }: { onClose: () => void }) {
           </button>
         ))}
       </div>
+      <p className="mb-2 text-xs font-medium text-muted">Reply engine</p>
+      <div className="mb-4 flex gap-2">
+        <button type="button" className={pill(st.selfHosted)} onClick={() => st.update({ selfHosted: true })}>
+          Self-hosted
+        </button>
+        <button type="button" className={pill(!st.selfHosted)} onClick={() => st.update({ selfHosted: false })}>
+          Cloud model
+        </button>
+      </div>
+
+      <p className="mb-2 text-xs font-medium text-muted">API keys (optional, stay on this device)</p>
+      <div className="mb-4 flex flex-col gap-1.5">
+        {([["gemini", "Gemini"], ["openai", "OpenAI"], ["deepseek", "DeepSeek"]] as const).map(([k, label]) => (
+          <input
+            key={k}
+            type="password"
+            value={st.keys[k]}
+            onChange={(e) => st.update({ keys: { ...st.keys, [k]: e.target.value } })}
+            placeholder={`${label} API key`}
+            className="rounded-lg bg-inset px-3 py-2 text-sm text-fg outline-none placeholder:opacity-50"
+          />
+        ))}
+      </div>
+
       <label className="mb-4 flex items-center justify-between gap-3 text-sm">
         <span>
           <span className="block font-medium">Visa consultant knowledge</span>

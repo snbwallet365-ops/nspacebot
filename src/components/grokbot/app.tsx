@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useAiSettings } from "@/lib/agents/ai-settings";
 import { activeBot, bindPersistence, useBotStore } from "@/lib/agents/store";
 import { Sidebar } from "@/components/grokbot/sidebar";
+import { Gate } from "@/components/grokbot/gate";
+import { useAccess } from "@/lib/agents/access";
 import { ChatPane } from "@/components/grokbot/chat";
 import { ComputerPanel } from "@/components/grokbot/computer";
 import {
@@ -26,6 +28,7 @@ export function GrokBotApp() {
   const [nav, setNav] = useState(false);
   const [menu, setMenu] = useState<Menu>(null);
   const bot = activeBot(useBotStore());
+  const { role, hidden, toggleHidden } = useAccess();
 
   useEffect(() => bindPersistence(), []);
   useEffect(() => useAiSettings.getState().load(), []);
@@ -44,6 +47,7 @@ export function GrokBotApp() {
   if (!bot) return null;
 
   return (
+    <Gate>
     <div data-theme={theme} className="h-dvh bg-canvas text-fg">
       <div className="flex h-full overflow-hidden bg-surface">
         <Sidebar
@@ -54,6 +58,10 @@ export function GrokBotApp() {
           onSelect={setActive}
           onNew={() => setMenu("new")}
           onProfile={() => setMenu("profile")}
+          onSettings={() => setMenu("ai")}
+          role={role}
+          hidden={hidden}
+          onToggleHidden={toggleHidden}
         />
         {nav && (
           <div className="fixed inset-0 z-40 flex md:hidden">
@@ -107,5 +115,6 @@ export function GrokBotApp() {
       {menu === "routines" && <RoutinesDialog onClose={() => setMenu(null)} />}
       {menu === "files" && <FilesDialog onClose={() => setMenu(null)} />}
     </div>
+    </Gate>
   );
 }
